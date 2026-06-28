@@ -297,7 +297,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   m_Enabled: 1
-  serializedVersion: 13
+  serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 2
@@ -349,7 +349,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShapeRadius: 0
+  m_ShadowRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
@@ -416,6 +416,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
   skmbike: {fileID: 440377423}
+  bikeModel: {fileID: 440377430}
 --- !u!54 &440377426
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -464,6 +465,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.3266403, y: 0.5958667, z: 2.0496583}
   m_Center: {x: -0.0048307776, y: 0.31076723, z: 0.22914863}
+--- !u!4 &440377430 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f73cf420833526242a45712174cf6466, type: 3}
+  m_PrefabInstance: {fileID: 1277537180}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &592137375
 GameObject:
   m_ObjectHideFlags: 0
