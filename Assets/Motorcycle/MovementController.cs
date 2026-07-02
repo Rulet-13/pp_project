@@ -1,22 +1,25 @@
 ﻿using System.Diagnostics.SymbolStore;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class NewMonoBehaviourScript : MonoBehaviour
 {
     public GameObject skmbike;
-    private float movespeedMaxW = 1700f; private float movespeednow = 0f; private float movespeedMaxS = 500f;
-    private float rotationspeed = 80f; private float slantmax = 20f; private float slantnow = 0f; private float leanSpeed = 20f;
+    private float movespeedMaxW = 2000f; private float movespeednow = 0f; private float movespeedMaxS = 500f; 
+    private float rotationspeed = 80f; private float slantmax = 25f; private float slantnow = 0f; private float leanSpeed = 20f;
     private Rigidbody rbbike;
     private bool tens = false;
     private float moveDirection { get { return InputWS().y * movespeednow; } }
     private float rotationDirection { get { return InputAD().x * rotationspeed; } }
-    
+
+
     private void StartPosition()
     {
-        skmbike.transform.position = new Vector3(0, 1, 0);
+        skmbike.transform.position = new Vector3(0, 4, 0);
         skmbike.transform.rotation = Quaternion.Euler(0, 0, 0);
         tens = false;
         TensorControl();
@@ -29,19 +32,34 @@ public class NewMonoBehaviourScript : MonoBehaviour
     private void Start()
     {
         StartPosition();
-
     }
     private void FixedUpdate()
     {
+        //rbbike.linearVelocity = (skmbike.transform.forward * moveDirection * Time.fixedDeltaTime) + (Vector3.up * rbbike.linearVelocity.y);
+        //skmbike.transform.localRotation = Quaternion.Euler(0, skmbike.transform.localRotation.eulerAngles.y, -slantnow); //наклон
+        //skmbike.transform.Rotate(0f, rotationDirection * Time.fixedDeltaTime, 0f, Space.World); //разворот
         rbbike.linearVelocity = (skmbike.transform.forward * moveDirection * Time.fixedDeltaTime) + (Vector3.up * rbbike.linearVelocity.y);
-        skmbike.transform.localRotation = Quaternion.Euler(0, skmbike.transform.localRotation.eulerAngles.y, -slantnow);
-        skmbike.transform.Rotate(0f, rotationDirection * Time.fixedDeltaTime, 0f, Space.World);
+        Quaternion targetRotation = Quaternion.Euler(0, skmbike.transform.localRotation.eulerAngles.y, -slantnow);
+        Quaternion yawRotation = Quaternion.Euler(0f, rotationDirection * Time.fixedDeltaTime, 0f);
+        Quaternion finalRotation = targetRotation * yawRotation;
+        rbbike.MoveRotation(finalRotation);
         TensorControl();
+
     }
 
     private void Update()
     {
         Restart();
+    }
+    private void OnCollisionEnter (Collision collision)
+    {
+        Debug.Log("столкновение с объектом " + collision.gameObject.name);
+        if (collision.gameObject.CompareTag("wall"))
+        {
+            movespeednow = 0f;
+            Debug.Log("врезание в стену");
+        }
+       
     }
 
     private Vector2 InputWS()
@@ -114,4 +132,5 @@ public class NewMonoBehaviourScript : MonoBehaviour
     }
 
 }
+
 
